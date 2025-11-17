@@ -1,11 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Math Mini</title>
+
+    <script src="lib/modernizr-2.8.3.js"></script>
+    <script src="scripts/modernizr-checks.js"></script>
+
+    <link rel="stylesheet" href="styles/style.css">
 </head>
+
 <body>
-    
+    <!-- Browser incompatibility warning -->
+    <div class="browser-warning" id="browserWarning" style="display: none;">
+        <div class="warning-content">
+            <strong>Warning</strong>
+            <p id="warningMessage">Browser does not support some modern functions</p>
+            <p class="warning-recommendation">
+                Use the following options:
+                <a href="https://www.google.com/chrome" target="_blank">Chrome</a>
+                <a href="https://www.mozilla.org/firefox" target="_blank">Firefox</a>
+                <a href="https://www.microsoft.com/edge" target="_blank">Edge</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Semantic HTML5 elements -->
+    <header>
+        <h1>Mathematical mini trainer application</h1>
+        <nav>
+            <a href="index.html" class="active">Main</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- About section -->
+        <section class="about">
+            <h2>About Math Mini project</h2>
+            <p>Math Mini is an interactive educational web application for young adults that teaches mathematical
+                concepts through visual, hands-on exercises. Read theory, solve problems, check out function graphs,
+                study fractals, and much more.</p>
+            <p class="warning">Be attentive: user and progress cannot be reset.</p>
+        </section>
+
+        <!-- User selection/creation section -->
+        <section class="user-section" id="userSection">
+            <!-- Dynamic content loaded by JS -->
+        </section>
+
+        <!-- Topics grid (shown only when user is selected) -->
+        <section class="topics-grid" id="topicsGrid" style="display: none;">
+            <h2>Topics to study</h2>
+            <!-- Topic card template-->
+            <article class="topic-card" data-topic="">
+                <h3>Topic</h3>
+                <p>Short description</p>
+                <div>
+                    <a href="" class="btn btn-theory">Theory page</a>
+                    <a href="" class="btn btn-practice"></a>Practice page</a>
+                    <a href="" class="btn btn-practice"></a>Visualization page</a>
+                    <span class="status-badge" data-status="incomplete"></span>
+                </div>
+            </article>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Math Mini | project to learn core web development</p>
+    </footer>
+
+    <script src="scripts/main.js"></script>
 </body>
+
 </html>

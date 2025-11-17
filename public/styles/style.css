@@ -1,0 +1,126 @@
+/* Modernizr fallback styles and warnings*/
+.browser-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid #991b1b;
+    animation: slideDown 0.4s ease;
+}
+
+.browser-warning a {
+    color: #fef08a;
+    text-decoration: underline;
+}
+
+.no-localstorage .browser-warning,
+.no-svg .browser-warning,
+.no-webworkers .browser-warning {
+    display: block;
+}
+
+/* CSS3 reset and base canvas*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #6366f1;
+    --secondary: #8b5cf6;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --dark: #1f2937;
+    --light: #f3f4f6;
+    --white: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--dark);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background: var(--white);
+    padding: 1.5rem 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+nav a {
+    color: var(--dark);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Main content  */
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* About section */
+.about {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+/* User section */
+.user-section {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+/* Form and input */
+
+/* User selector */
+
+/* Buttons */
+
+/* Topics grid */
+
+/* Topic card */
+
+/* Footer */
+footer {
+    background: rgba(255, 255, 255, 0.95);
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 3rem;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.4rem;
+    }
+}

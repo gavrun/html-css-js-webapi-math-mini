@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theory: Topic</title>
+
+    <script src="../lib/modernizr-2.8.3.js"></script>
+    <script src="../scripts/modernizr-checks.js"></script>
+
+    <link rel="stylesheet" href="../styles/style.css">
+    <style>
+        /* Page-specific styles */
+    </style>
+</head>
+
+<body>
+    <div class="browser-warning" id="browserWarning" style="display: none;">
+        <div class="warning-content">
+            <strong>Warning</strong>
+            <p id="warningMessage">Browser does not support some modern functions</p>
+            <p class="warning-recommendation">
+                Use the following options:
+                <a href="https://www.google.com/chrome" target="_blank">Chrome</a>
+                <a href="https://www.mozilla.org/firefox" target="_blank">Firefox</a>
+                <a href="https://www.microsoft.com/edge" target="_blank">Edge</a>
+            </p>
+        </div>
+    </div>
+
+    <header>
+        <h1>Mathematical mini trainer application</h1>
+        <nav>
+            <a href="../index.html" class="active">Main</a>
+            <a href="topic-theory.html" class="active">Theory: Topic</a>
+        </nav>
+    </header>
+
+    <main>
+        <article class="theory-container">
+            <div class="theory-header">
+                <h2>Topic</h2>
+                <p><em>Sub-topic and description</em></p>
+            </div>
+            <section class="theory-content" id="theoryContent">
+                <!-- Content loaded from txt file -->
+                <p>Loading...</p>
+            </section>
+            <section class="audio-section">
+                <h3>Listen theory</h3>
+                <p>Enable audio to listen narrated theory:</p>
+                <audio controls preload="metadata">
+                    <source src="../assets/topic-theory.mp3" type="audio/mpeg">
+                    Browser does not support audio element.
+                </audio>
+            </section>
+
+            <nav class="navigation-buttons">
+                <a href="../index.html" class="btn btn-secondary">Back to Main</a>
+                <a href="topic-practice.html" class="btn btn-primary">Go to Practice</a>
+            </nav>
+        </article>
+    </main>
+
+    <footer>
+        <p>© 2025 Math Mini | project to learn core web development</p>
+    </footer>
+
+    <script src="../scripts/main.js"></script>
+    <script>
+        // Page-specific logic and gracefull degradation
+        'use strict';
+        (function () {
+            fetch().then().catch();
+        })();
+    </script>
+</body>
+
+</html>
