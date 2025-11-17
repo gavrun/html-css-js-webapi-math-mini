@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theory: Arithmetics</title>
+
+    <script src="../lib/modernizr-2.8.3.js"></script>
+    <script src="../scripts/modernizr-checks.js"></script>
+
+    <link rel="stylesheet" href="../styles/style.css">
+    <style>
+        /* Page-specific styles */
+        .theory-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .theory-header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .theory-content {
+            line-height: 1.8;
+            color: var(--dark);
+            margin-bottom: 2rem;
+        }
+
+        .theory-content p {
+            margin-bottom: 1rem;
+        }
+
+        .audio-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            color: var(--white);
+        }
+
+        .audio-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .navigation-buttons .btn {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="browser-warning" id="browserWarning" style="display: none;">
+        <div class="warning-content">
+            <strong>Warning</strong>
+            <p id="warningMessage">Browser does not support some modern functions</p>
+            <p class="warning-recommendation">
+                Use the following options:
+                <a href="https://www.google.com/chrome" target="_blank">Chrome</a>
+                <a href="https://www.mozilla.org/firefox" target="_blank">Firefox</a>
+                <a href="https://www.microsoft.com/edge" target="_blank">Edge</a>
+            </p>
+        </div>
+    </div>
+
+    <header>
+        <h1>Mathematical mini trainer application</h1>
+        <nav>
+            <a href="../index.html">Main</a>
+            <a href="arithmetic-theory.html" class="active">Theory: Arithmetics</a>
+        </nav>
+    </header>
+
+    <main>
+        <article class="theory-container">
+            <div class="theory-header">
+                <h2>Arithmetics</h2>
+                <p><em>Fundamentals of Mathematical Operations</em></p>
+            </div>
+            <section class="theory-content" id="theoryContent">
+                <!-- Content loaded from txt file -->
+                <p>Loading...</p>
+            </section>
+            <section class="audio-section">
+                <h3>Listen theory</h3>
+                <p>Enable audio to listen narrated theory:</p>
+                <audio controls preload="metadata">
+                    <source src="../assets/arithmetic-theory.mp3" type="audio/mpeg">
+                    Browser does not support audio element.
+                </audio>
+            </section>
+
+            <nav class="navigation-buttons">
+                <a href="../index.html" class="btn btn-secondary">Back to Main</a>
+                <a href="arithmetic-practice.html" class="btn btn-primary">Go to Practice</a>
+            </nav>
+        </article>
+    </main>
+
+    <footer>
+        <p>© 2025 Math Mini | project to learn core web development</p>
+    </footer>
+
+    <script src="../scripts/main.js"></script>
+    <script>
+        // Page-specific logic and gracefull degradation
+        'use strict';
+        (function() {
+            fetch('../assets/arithmetic-theory.txt')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load theory text');
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    const contentDiv = document.getElementById('theoryContent');
+
+                    // Split by paragraphs and wrap in <p> tags
+                    const paragraphs = text.split('\n\n').filter(p => p.trim());
+
+                    contentDiv.innerHTML = paragraphs.map(p => `<p>${p.trim()}</p>`).join('');
+                })
+                .catch(error => {
+                    console.error('Error loading theory:', error);
+
+                    document.getElementById('theoryContent').innerHTML = `
+                        <p><strong>Arithmetics</strong> is a branch of Mathematics that studies numbers and basic operations with them.</p>
+                        <p><strong>Basic operations:</strong></p>
+                        <p>• <strong>Addition (+)</strong> — combining two or more numbers into one.</p>
+                        <p>• <strong>Subtraction (−)</strong> — finding the difference between numbers.</p>
+                        <p>• <strong>Multiplication (×)</strong> — repeatedly adding the same numbers.</p>
+                        <p>• <strong>Division (÷)</strong> — dividing a number into equal parts.</p>
+                        <p>Arithmetics is the foundation of all Mathematics. Once you master it, you can solve more complex problems!</p>
+                    `;
+                });
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+Arithmetic is the foundation of all mathematics. It studies numbers and operations with them: addition, subtraction, multiplication, and division. Imagine numbers as building blocks, from which you can build anything: from a simple house to a huge skyscraper!
+
+Addition is when you combine several groups of objects. For example, you have 3 apples, and a friend gives you 2 more—now you have 5 apples. The "+" sign shows that we are adding.
+
+Subtraction is the opposite. If you eat 2 of 5 apples, you have 3 left. The "-" sign means that we are taking something away.
+
+Multiplication is a quick way to add like numbers. Instead of writing 3 + 3 + 3 + 3, you can write 3 × 4 = 12. This means "take the number 3 four times."
+
+Division is the opposite of multiplication. If you have 12 candies and want to divide them equally among four friends, each will get three candies: 12 ÷ 4 = 3.
+
+It's important to understand the order of operations. Multiplication and division come first, then addition and subtraction. Parentheses change the order: what's inside the parentheses always comes first!
+
+Arithmetic is needed everywhere: when buying something at the store, counting points in a game, managing time, or following a recipe. Once you master these four operations, you'll be able to solve thousands of different problems!

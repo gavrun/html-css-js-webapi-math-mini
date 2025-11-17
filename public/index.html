@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Mini</title>
+    <link rel="icon" href="favicon.png" type="image/png">
 
     <script src="lib/modernizr-2.8.3.js"></script>
     <script src="scripts/modernizr-checks.js"></script>
@@ -42,7 +43,7 @@
             <p>Math Mini is an interactive educational web application for young adults that teaches mathematical
                 concepts through visual, hands-on exercises. Read theory, solve problems, check out function graphs,
                 study fractals, and much more.</p>
-            <p class="warning">Be attentive: user and progress cannot be reset.</p>
+            <p class="warning">Be aware: users cannot be deleted.</p>
         </section>
 
         <!-- User selection/creation section -->
@@ -53,8 +54,9 @@
         <!-- Topics grid (shown only when user is selected) -->
         <section class="topics-grid" id="topicsGrid" style="display: none;">
             <h2>Topics to study</h2>
+
             <!-- Topic card template-->
-            <article class="topic-card" data-topic="">
+            <!-- <article class="topic-card" data-topic="topic">
                 <h3>Topic</h3>
                 <p>Short description</p>
                 <div>
@@ -63,8 +65,19 @@
                     <a href="" class="btn btn-practice"></a>Visualization page</a>
                     <span class="status-badge" data-status="incomplete"></span>
                 </div>
+            </article> -->
+
+            <article class="topic-card" data-topic="arithmetic">
+                <h3>Arithmetics</h3>
+                <p>Basics of addition and subtraction</p>
+                <div class="card-actions">
+                    <a href="pages/arithmetic-theory.html" class="btn btn-theory">Theory</a>
+                    <a href="pages/arithmetic-practice.html" class="btn btn-theory">Practice</a>
+                    <span class="status-badge" data-status="incomplete"></span>
+                </div>
             </article>
 
+            <!-- More topic cards -->
         </section>
     </main>
 
