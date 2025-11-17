@@ -1,0 +1,13 @@
+A fraction is a way to represent part of a whole number. Imagine a pizza cut into 8 slices. If you ate 3 slices, you've eaten 3/8 (three-eighths) of the pizza. The top number is called the numerator, the bottom number is the denominator.
+
+The numerator tells you how many pieces you took. The denominator tells you how many pieces the whole is divided into. In the fraction 3/8, the numerator is 3 (the pieces eaten), and the denominator is 8 (the total pieces).
+
+Fractions are common: half an hour is 1/2 an hour, a quarter of an apple is 1/4, a third of the way there is 1/3. They help us accurately describe parts of something.
+
+Comparing fractions isn't always easy. If the denominators are the same, the fraction with the larger numerator is larger: 5/8 is larger than 3/8. It's logical: 5 slices of pizza are bigger than 3 slices.
+
+When the denominators are different, you need to think. For example, 1/2 is bigger than 1/3 because half is bigger than a third. Imagine two identical chocolate bars: one cut in half, the other in thirds. The half will be bigger!
+
+Fractions can be added, subtracted, multiplied, and divided just like regular numbers. The rules are slightly different, but the principle is the same.
+
+Understanding fractions opens the door to percentages, proportions, and many other important topics. It's one of the most useful tools in mathematics!

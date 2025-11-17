@@ -6,7 +6,7 @@
     // Constants
     const STORAGE_KEY = 'mathTrainer';
     const SKILLS = ['pre-school', 'school', 'high-school'];
-    const TOPICS = ['arithmetic'];
+    const TOPICS = ['arithmetic', 'fractions'];
 
     // Initialize app
     function initApp() {
@@ -196,7 +196,8 @@
             age: parseInt(formData.get('age')),
             skill: formData.get('skill'),
             progress: {
-                arithmetic: { theory: false, task: false }
+                arithmetic: { theory: false, task: false },
+                fractions: { theory: false, task: false }
             }
         };
 

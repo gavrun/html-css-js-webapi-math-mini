@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice: Fractions</title>
+
+    <script src="../lib/modernizr-2.8.3.js"></script>
+    <script src="../scripts/modernizr-checks.js"></script>
+
+    <link rel="stylesheet" href="../styles/style.css">
+    <style>
+        /* Page-specific styles */
+        .practice-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .practice-header {
+            border-bottom: 3px solid var(--success);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .task-description {
+            background: #fef3c7;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--warning);
+            margin-bottom: 2rem;
+        }
+
+        /* Drag & Drop areas */
+        .drag-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .source-area {
+            background: #f3f4f6;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px dashed #9ca3af;
+        }
+
+        .source-area h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .drag-items {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            min-height: 80px;
+        }
+
+        .drag-item {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: move;
+            user-select: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .drag-item:hover {
+            transform: scale(1.05);
+        }
+
+        .drag-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        /* Drop zones */
+        .drop-area {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .drop-area h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .drop-zones {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .drop-zone {
+            width: 100px;
+            height: 100px;
+            border: 3px dashed #9ca3af;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9fafb;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .drop-zone::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -25px;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .drop-zone.drag-over {
+            background: #fef3c7;
+            border-color: var(--warning);
+            transform: scale(1.05);
+        }
+
+        .drop-zone .drag-item {
+            margin: 0;
+            cursor: move;
+        }
+
+        /* Result states */
+        .drop-area.correct {
+            background: #d1fae5;
+            border-color: var(--success);
+            animation: successPulse 0.6s ease;
+        }
+
+        .drop-area.incorrect {
+            background: #fee2e2;
+            border-color: var(--danger);
+            animation: errorShake 0.5s ease;
+        }
+
+        @keyframes successPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes errorShake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-buttons .btn {
+            flex: 1;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: successPulse 0.6s ease;
+        }
+
+        .arrow {
+            font-size: 2rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="browser-warning" id="browserWarning" style="display: none;">
+        <div class="warning-content">
+            <strong>Warning</strong>
+            <p id="warningMessage">Browser does not support some modern functions</p>
+            <p class="warning-recommendation">
+                Use the following options:
+                <a href="https://www.google.com/chrome" target="_blank">Chrome</a>
+                <a href="https://www.mozilla.org/firefox" target="_blank">Firefox</a>
+                <a href="https://www.microsoft.com/edge" target="_blank">Edge</a>
+            </p>
+        </div>
+    </div>
+
+    <header>
+        <h1>Mathematical mini trainer application</h1>
+        <nav>
+            <a href="../index.html">Main</a>
+            <a href="fractions-theory.html">Theory: Fractions</a>
+            <a href="topic-practice.html" class="active">Practice</a>
+        </nav>
+    </header>
+
+    <main>
+        <article class="practice-container">
+            <div class="practice-header">
+                <h2>Practice: Fractions</h2>
+                <p><em>Order the fractions from smallest to largest</em></p>
+            </div>
+            <section class="task-description">
+                <h3>Task</h3>
+                <p>Drag the fractions in the correct order from <strong>smaller to larger</strong>.</p>
+                <p>After placing all the elements, click the "Check" button.</p>
+            </section>
+            <div class="drag-container">
+                <!-- Source area with draggable items -->
+                <section class="source-area">
+                    <h3>Draggable elements:</h3>
+                    <div class="drag-items" id="sourceItems">
+                        <div class="drag-item" draggable="true" data-value="3/4">3/4</div>
+                        <div class="drag-item" draggable="true" data-value="1/2">1/2</div>
+                        <div class="drag-item" draggable="true" data-value="1/4">1/4</div>
+                        <div class="drag-item" draggable="true" data-value="1/3">1/3</div>
+                    </div>
+                </section>
+                <!-- Drop area with zones -->
+                <section class="drop-area" id="dropArea">
+                    <h3>Place items here:</h3>
+                    <div class="drop-zones">
+                        <div class="drop-zone" data-index="0" data-label="1-st"></div>
+                        <span class="arrow">→</span>
+                        <div class="drop-zone" data-index="1" data-label="2-nd"></div>
+                        <span class="arrow">→</span>
+                        <div class="drop-zone" data-index="2" data-label="3-rd"></div>
+                        <span class="arrow">→</span>
+                        <div class="drop-zone" data-index="3" data-label="4-th"></div>
+                    </div>
+                </section>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+                <button class="btn btn-primary" id="checkBtn">Check</button>
+            </div>
+            <div class="success-message" id="successMessage">
+                <h3>Excellent! Task completed.</h3>
+                <p>Your progress has been saved. Return to the main page.</p>
+            </div>
+
+            <nav class="action-buttons" style="margin-top: 1rem;">
+                <a href="../index.html" class="btn btn-secondary">Back to Main</a>
+                <a href="fractions-theory.html" class="btn btn-primary">Back to Theory</a>
+            </nav>
+        </article>
+    </main>
+
+    <footer>
+        <p>© 2025 Math Mini | project to learn core web development</p>
+    </footer>
+
+    <script src="../scripts/main.js"></script>
+    <script>
+        'use strict';
+        // Page-specific Drag & Drop logic
+        (function () {
+            const correctOrder = ['1/4', '1/3', '1/2', '3/4'];
+            let draggedElement = null;
+
+            const dragItems = document.querySelectorAll('.drag-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+
+            const sourceItems = document.getElementById('sourceItems');
+            const dropArea = document.getElementById('dropArea');
+            const checkBtn = document.getElementById('checkBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const successMessage = document.getElementById('successMessage');
+
+            // TODO length check
+            if (dragItems.length < correctOrder.length || dropZones.length < correctOrder.length) {
+                return;
+            }
+            dragItems.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('drop', handleDrop);
+                zone.addEventListener('dragleave', handleDragLeave);
+            });
+
+            sourceItems.addEventListener('dragover', handleDragOver);
+            sourceItems.addEventListener('drop', handleDropToSource);
+
+            checkBtn.addEventListener('click', checkAnswer);
+            resetBtn.addEventListener('click', resetTask);
+
+            function handleDragStart(e) {
+                draggedElement = this;
+                this.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', this.innerHTML);
+            }
+
+            function handleDragEnd(e) {
+                this.classList.remove('dragging');
+            }
+
+            function handleDragOver(e) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+                e.dataTransfer.dropEffect = 'move';
+
+                if (this.classList.contains('drop-zone')) {
+                    this.classList.add('drag-over');
+                }
+                return false;
+            }
+
+            function handleDragLeave(e) {
+                this.classList.remove('drag-over');
+            }
+
+            function handleDrop(e) {
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+                this.classList.remove('drag-over');
+
+                if (!draggedElement) return false;
+
+                const existingItem = this.querySelector('.drag-item');
+                if (existingItem) {
+                    const parent = draggedElement.parentNode;
+                    if (parent) {
+                        parent.appendChild(existingItem);
+                    }
+                }
+                this.appendChild(draggedElement);
+
+                dropArea.classList.remove('correct', 'incorrect');
+                successMessage.classList.remove('show');
+                return false;
+            }
+
+            function handleDropToSource(e) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+
+                if (!draggedElement) return false;
+
+                sourceItems.appendChild(draggedElement);
+
+                dropArea.classList.remove('correct', 'incorrect');
+                successMessage.classList.remove('show');
+                return false;
+            }
+
+            function checkAnswer() {
+                const filledZones = Array.from(dropZones).filter(zone => zone.querySelector('.drag-item'));
+
+                if (filledZones.length !== correctOrder.length) {
+                    // Notify user
+                    return;
+                }
+
+                const currentOrder = Array.from(dropZones).map(zone => {
+                    const item = zone.querySelector('.drag-item');
+                    return item ? item.getAttribute('data-value') : null;
+                });
+
+                const isCorrect = currentOrder.every((value, index) => value === correctOrder[index]);
+
+                if (isCorrect) {
+                    dropArea.classList.remove('incorrect');
+                    dropArea.classList.add('correct');
+                    successMessage.classList.add('show');
+                    // Save progress
+                    if (window.mathTrainer) {
+                        window.mathTrainer.markTaskComplete('fractions');
+                    }
+                } else {
+                    dropArea.classList.remove('correct');
+                    dropArea.classList.add('incorrect');
+                    successMessage.classList.remove('show');
+                }
+            }
+
+            function resetTask() {
+                dropZones.forEach(zone => {
+                    const item = zone.querySelector('.drag-item');
+                    if (item) {
+                        sourceItems.appendChild(item);
+                    }
+                });
+
+                dropArea.classList.remove('correct', 'incorrect');
+                successMessage.classList.remove('show');
+            }
+        })();
+    </script>
+</body>
+
+</html>
