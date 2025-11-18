@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualization: Fractals</title>
+
+    <script src="../lib/modernizr-2.8.3.js"></script>
+    <script src="../scripts/modernizr-checks.js"></script>
+
+    <link rel="stylesheet" href="../styles/style.css">
+    <style>
+        /* Page-specific styles */
+        .visualization-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .visualization-header {
+            border-bottom: 3px solid #8b5cf6;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .task-description {
+            background: #f5f3ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #8b5cf6;
+            margin-bottom: 2rem;
+        }
+
+        /* Controls */
+        .control-section {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: var(--dark);
+            min-width: 120px;
+        }
+
+        .control-group input[type="range"] {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-group .value-display {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .control-section .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+
+        /* SVG container */
+        .fractal-container {
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid #e5e7eb;
+            display: none;
+        }
+
+        .fractal-container.show {
+            display: block;
+        }
+
+        .svg-wrapper {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Loading spinner */
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .loader.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #8b5cf6;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Success message */
+        .success-message {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: successPulse 0.6s ease;
+        }
+
+        @keyframes successPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .navigation-buttons .btn {
+            flex: 1;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #1e40af;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="browser-warning" id="browserWarning" style="display: none;">
+        <div class="warning-content">
+            <strong>Warning</strong>
+            <p id="warningMessage">Browser does not support some modern functions</p>
+            <p class="warning-recommendation">
+                Use the following options:
+                <a href="https://www.google.com/chrome" target="_blank">Chrome</a>
+                <a href="https://www.mozilla.org/firefox" target="_blank">Firefox</a>
+                <a href="https://www.microsoft.com/edge" target="_blank">Edge</a>
+            </p>
+        </div>
+    </div>
+
+    <header>
+        <h1>Mathematical mini trainer application</h1>
+        <nav>
+            <a href="../index.html">Main</a>
+            <a href="fractal-theory.html">Theory: Fractals</a>
+            <a href="fractal-visualization.html" class="active">Visualization</a>
+        </nav>
+    </header>
+
+    <main>
+        <article class="visualization-container">
+            <div class="visualization-header">
+                <h2>Fractals Visualization</h2>
+                <p><em>Plotting fractal geometry</em></p>
+            </div>
+            <section class="task-description">
+                <h3>Task</h3>
+                <p>Select the recursion depth and click the "Plot" button to see a visualization of fractal.</p>
+            </section>
+            <div class="control-section">
+                <h3>Configuration</h3>
+                <div class="control-group">
+                    <label for="depthRange">Depth of recursion</label>
+                    <input type="range" id="depthRange" min="1" max="7" value="5" step="1">
+                    <span class="value-display" id="depthValue">5</span>
+                </div>
+                <div class="info-box">
+                    <p>Try depth of 4-5. Values ​​greater than 6 may take longer to calculate.</p>
+                </div>
+                <button class="btn btn-primary" id="drawBtn">Plot</button>
+            </div>
+            <div class="loader" id="loader">
+                <div class="spinner"></div>
+                <p>Calculating coordinates...</p>
+            </div>
+            <section class="fractal-container" id="fractalContainer">
+                <h3 style="text-align: center; margin-bottom: 1rem;">Sierpinski triangle</h3>
+                <div class="svg-wrapper">
+                    <svg id="svgFractal" viewBox="0 0 600 520" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Fractal will be drawn here -->
+                    </svg>
+                </div>
+            </section>
+
+            <div class="success-message" id="successMessage">
+                <h3>Excellent! Calculating completed.</h3>
+                <p>Your progress has been saved. Return to the main page.</p>
+            </div>
+            <nav class="navigation-buttons">
+                <a href="../index.html" class="btn btn-secondary">Back to Main</a>
+                <a href="fractal-theory.html" class="btn btn-primary">Back to Theory</a>
+            </nav>
+        </article>
+    </main>
+
+    <footer>
+        <p>© 2025 Math Mini | project to learn core web development</p>
+    </footer>
+
+    <script src="../scripts/main.js"></script>
+    <script>
+        'use strict';
+        // Page-specific visualization logic
+        (function () {
+            const depthRange = document.getElementById('depthRange');
+            const depthValue = document.getElementById('depthValue');
+            const drawBtn = document.getElementById('drawBtn');
+            const loader = document.getElementById('loader');
+            const fractalContainer = document.getElementById('fractalContainer');
+            const successMessage = document.getElementById('successMessage');
+            const svg = document.getElementById('svgFractal');
+
+            let worker = null;
+
+            depthRange.addEventListener('input', function () {
+                depthValue.textContent = this.value;
+            });
+
+            drawBtn.addEventListener('click', drawFractal);
+
+            // Draw 
+            function drawFractal() {
+                const depth = parseInt(depthRange.value);
+
+                // Show loader
+                loader.classList.add('active');
+                drawBtn.disabled = true;
+                fractalContainer.classList.remove('show');
+                successMessage.classList.remove('show');
+
+                svg.innerHTML = '';
+
+                // Create worker
+                worker = new Worker('../scripts/fractal-worker.js');
+
+                // Initial triangle coordinates (equilateral triangle)
+                const initialTriangle = {
+                    p1: { x: 300, y: 20 },
+                    p2: { x: 50, y: 500 },
+                    p3: { x: 550, y: 500 }
+                };
+
+                // Request from worker 
+                worker.postMessage({
+                    type: 'calculateSierpinski',
+                    triangle: initialTriangle,
+                    depth: depth
+                });
+
+                // Handle worker response
+                worker.onmessage = function (e) {
+                    const { type, data } = e.data;
+
+                    if (type === 'sierpinskiCalculated') {
+                        // Hide loader
+                        loader.classList.remove('active');
+                        fractalContainer.classList.add('show');
+                        drawBtn.disabled = false;
+
+                        drawTriangles(data.triangles);
+
+                        successMessage.classList.add('show');
+                        if (window.mathTrainer) {
+                            window.mathTrainer.markTaskComplete('fractal');
+                        }
+
+                        // Terminate worker
+                        worker.terminate();
+                    }
+                };
+
+                worker.onerror = function (error) {
+                    console.error('Worker error:', error);
+                    loader.classList.remove('active');
+                    drawBtn.disabled = false;
+                };
+            }
+
+            // Draw triangles
+            function drawTriangles(triangles) {
+                const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+                const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+
+                gradient.setAttribute('id', 'fractalGradient');
+                gradient.setAttribute('x1', '0%');
+                gradient.setAttribute('y1', '0%');
+                gradient.setAttribute('x2', '100%');
+                gradient.setAttribute('y2', '100%');
+
+                const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop1.setAttribute('offset', '0%');
+                stop1.setAttribute('style', 'stop-color:#8b5cf6;stop-opacity:1');
+
+                const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop2.setAttribute('offset', '100%');
+                stop2.setAttribute('style', 'stop-color:#6366f1;stop-opacity:1');
+
+                gradient.appendChild(stop1);
+                gradient.appendChild(stop2);
+                defs.appendChild(gradient);
+                svg.appendChild(defs);
+
+                triangles.forEach((triangle, index) => {
+                    const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+
+                    const points = `${triangle.p1.x},${triangle.p1.y} ${triangle.p2.x},${triangle.p2.y} ${triangle.p3.x},${triangle.p3.y}`;
+
+                    polygon.setAttribute('points', points);
+                    polygon.setAttribute('fill', 'url(#fractalGradient)');
+                    polygon.setAttribute('stroke', '#ffffff');
+                    polygon.setAttribute('stroke-width', '1');
+                    polygon.setAttribute('opacity', '0');
+
+                    svg.appendChild(polygon);
+
+                    // Animate with delay
+                    setTimeout(() => {
+                        polygon.setAttribute('opacity', '0.9');
+                        polygon.style.transition = 'opacity 0.3s ease';
+                    }, index * 2);
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>

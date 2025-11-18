@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualization: Graphs</title>
+
+    <script src="../lib/modernizr-2.8.3.js"></script>
+    <script src="../scripts/modernizr-checks.js"></script>
+
+    <link rel="stylesheet" href="../styles/style.css">
+    <style>
+        /* Page-specific styles */
+        .visualization-container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .visualization-header {
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .task-description {
+            background: #eff6ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            margin-bottom: 2rem;
+        }
+
+        /* Graphs grid */
+        .graphs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .graph-card {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .graph-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .graph-card h3 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .graph-card .formula {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        /* SVG container */
+        .svg-container {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Control buttons */
+        .control-section {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .control-section .btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Loading spinner */
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .loader.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Success message */
+        .success-message {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: successPulse 0.6s ease;
+        }
+
+        @keyframes successPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .navigation-buttons .btn {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .graphs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="browser-warning" id="browserWarning" style="display: none;">
+        <div class="warning-content">
+            <strong>Warning</strong>
+            <p id="warningMessage">Browser does not support some modern functions</p>
+            <p class="warning-recommendation">
+                Use the following options:
+                <a href="https://www.google.com/chrome" target="_blank">Chrome</a>
+                <a href="https://www.mozilla.org/firefox" target="_blank">Firefox</a>
+                <a href="https://www.microsoft.com/edge" target="_blank">Edge</a>
+            </p>
+        </div>
+    </div>
+
+    <header>
+        <h1>Mathematical mini trainer application</h1>
+        <nav>
+            <a href="../index.html">Main</a>
+            <a href="graphs-theory.html">Theory: Graphs</a>
+            <a href="graphs-visualization.html" class="active">Visualization</a>
+        </nav>
+    </header>
+
+    <main>
+        <article class="visualization-container">
+            <div class="visualization-header">
+                <h2>Graphs Visualization</h2>
+                <p><em>Plotting graphs of elementary functions</em></p>
+            </div>
+            <section class="task-description">
+                <h3>Task</h3>
+                <p>Click the "Plot" button to see a visualization of the four elementary functions.</p>
+            </section>
+            <div class="control-section">
+                <button class="btn btn-primary" id="buildBtn">Plot</button>
+            </div>
+            <div class="loader" id="loader">
+                <div class="spinner"></div>
+                <p>Calculating coordinates...</p>
+            </div>
+            <div class="graphs-grid" id="graphsGrid" style="display: none;">
+                <!-- Linear function -->
+                <div class="graph-card">
+                    <h3>Linear function</h3>
+                    <p class="formula">y = x</p>
+                    <div class="svg-container">
+                        <svg id="svgLinear" viewBox="-10 -10 220 220" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Axes and grid will be drawn here -->
+                        </svg>
+                    </div>
+                </div>
+                <!-- Quadratic function -->
+                <div class="graph-card">
+                    <h3>Quadratic function</h3>
+                    <p class="formula">y = x²</p>
+                    <div class="svg-container">
+                        <svg id="svgQuadratic" viewBox="-10 -10 220 220" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Axes and grid will be drawn here -->
+                        </svg>
+                    </div>
+                </div>
+                <!-- Inverse function -->
+                <div class="graph-card">
+                    <h3>Inverse function</h3>
+                    <p class="formula">y = 1/x</p>
+                    <div class="svg-container">
+                        <svg id="svgInverse" viewBox="-10 -10 220 220" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Axes and grid will be drawn here -->
+                        </svg>
+                    </div>
+                </div>
+                <!-- Square root function -->
+                <div class="graph-card">
+                    <h3>Square root function</h3>
+                    <p class="formula">y = √x</p>
+                    <div class="svg-container">
+                        <svg id="svgSqrt" viewBox="-10 -10 220 220" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Axes and grid will be drawn here -->
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="success-message" id="successMessage">
+                <h3>Excellent! Calculating completed.</h3>
+                <p>Your progress has been saved. Return to the main page.</p>
+            </div>
+            <nav class="navigation-buttons">
+                <a href="../index.html" class="btn btn-secondary">Back to Main</a>
+                <a href="graphs-theory.html" class="btn btn-primary">Back to Theory</a>
+            </nav>
+        </article>
+    </main>
+
+    <footer>
+        <p>© 2025 Math Mini | project to learn core web development</p>
+    </footer>
+
+    <script src="../scripts/main.js"></script>
+    <script>
+        'use strict';
+        // Page-specific visualization logic
+        (function () {
+            const buildBtn = document.getElementById('buildBtn');
+            const loader = document.getElementById('loader');
+            const graphsGrid = document.getElementById('graphsGrid');
+            const successMessage = document.getElementById('successMessage');
+
+            let worker = null;
+
+            buildBtn.addEventListener('click', buildGraphs);
+
+            function buildGraphs() {
+                // Show loader
+                loader.classList.add('active');
+                buildBtn.disabled = true;
+                graphsGrid.style.display = 'none';
+                successMessage.classList.remove('show');
+
+                // Create worker
+                worker = new Worker('../scripts/graphs-worker.js');
+
+                // Request from worker 
+                worker.postMessage({
+                    type: 'calculateGraphs',
+                    range: { min: -10, max: 10, step: 0.1 }
+                });
+
+                // Handle worker response
+                worker.onmessage = function (e) {
+                    const { type, data } = e.data;
+
+                    if (type === 'graphsCalculated') {
+                        // Hide loader
+                        loader.classList.remove('active');
+                        graphsGrid.style.display = 'grid';
+                        buildBtn.disabled = false;
+
+                        drawGraph('svgLinear', data.linear, '#3b82f6');
+                        drawGraph('svgQuadratic', data.quadratic, '#8b5cf6');
+                        drawGraph('svgInverse', data.inverse, '#ef4444');
+                        drawGraph('svgSqrt', data.sqrt, '#10b981');
+
+                        successMessage.classList.add('show');
+                        if (window.mathTrainer) {
+                            window.mathTrainer.markTaskComplete('graphs');
+                        }
+
+                        // Terminate worker
+                        worker.terminate();
+                    }
+                };
+
+                worker.onerror = function (error) {
+                    console.error('Worker error:', error);
+                    loader.classList.remove('active');
+                    buildBtn.disabled = false;
+                };
+            }
+
+            // Draw graph on SVG canvas
+            function drawGraph(svgId, points, color) {
+                const svg = document.getElementById(svgId);
+
+                svg.innerHTML = '';
+
+                const width = 200;
+                const height = 200;
+                const centerX = width / 2;
+                const centerY = height / 2;
+                const scale = 10;
+
+                // Draw grid
+                for (let i = -10; i < 10; i++) {
+                    if (i !== 0) {
+                        // Vertical lines
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', centerX + i * scale);
+                        line.setAttribute('y1', 0);
+                        line.setAttribute('x2', centerX + i * scale);
+                        line.setAttribute('y2', height);
+                        line.setAttribute('stroke', '#e5e7eb');
+                        line.setAttribute('stroke-width', '0.5');
+                        svg.appendChild(line);
+                        // Horizontal lines
+                        const line2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line2.setAttribute('x1', 0);
+                        line2.setAttribute('y1', centerY + i * scale);
+                        line2.setAttribute('x2', width);
+                        line2.setAttribute('y2', centerY + i * scale);
+                        line2.setAttribute('stroke', '#e5e7eb');
+                        line2.setAttribute('stroke-width', '0.5');
+                        svg.appendChild(line2);
+                    }
+                }
+
+                // Draw axes
+                const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                xAxis.setAttribute('x1', 0);
+                xAxis.setAttribute('y1', centerY);
+                xAxis.setAttribute('x2', width);
+                xAxis.setAttribute('y2', centerY);
+                xAxis.setAttribute('stroke', '#1f2937');
+                xAxis.setAttribute('stroke-width', '2');
+                svg.appendChild(xAxis);
+                const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                yAxis.setAttribute('x1', centerX);
+                yAxis.setAttribute('y1', 0);
+                yAxis.setAttribute('x2', centerX);
+                yAxis.setAttribute('y2', height);
+                yAxis.setAttribute('stroke', '#1f2937');
+                yAxis.setAttribute('stroke-width', '2');
+                svg.appendChild(yAxis);
+
+                // Draw graph lines
+                if (Array.isArray(points[0])) {
+                    // Multiple segments
+                    points.forEach(segment => {
+                        drawPolyline(svg, segment, color, centerX, centerY, scale);
+                    });
+                } else {
+                    // Single segment
+                    drawPolyline(svg, points, color, centerX, centerY, scale);
+                }
+            }
+
+            // Draw polyline for graph points
+            function drawPolyline(svg, points, color, centerX, centerY, scale) {
+                const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+
+                const pointsStr = points
+                    .filter(p => p.y !== null && isFinite(p.y))
+                    .map(p => {
+                        const x = centerX + p.x * scale;
+                        const y = centerY - p.y * scale; // invert Y axis
+                        return `${x},${y}`;
+                    })
+                    .join(' ');
+
+                polyline.setAttribute('points', pointsStr);
+                polyline.setAttribute('fill', 'none');
+                polyline.setAttribute('stroke', color);
+                polyline.setAttribute('stroke-width', '2');
+                polyline.setAttribute('stroke-linecap', 'round');
+                polyline.setAttribute('stroke-linejoin', 'round');
+
+                svg.appendChild(polyline);
+            }
+        })();
+    </script>
+</body>
+
+</html>

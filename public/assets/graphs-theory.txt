@@ -1,0 +1,13 @@
+The graph of a function is a visual story about how one quantity depends on another. It's like a treasure map, only instead of islands and mountains, it has lines that tell the story of numbers!
+
+Imagine you're riding a bike. The longer you ride, the farther you get from home. If you draw a graph with time as the horizontal axis and distance as the vertical axis, you'll get a line that slopes upward. This is a graph of distance versus time.
+
+In mathematics, there are functions that are ubiquitous. The linear function y = x creates a straight line at a 45-degree angle. It shows a direct relationship: what you put in is what you get out.
+
+The quadratic function y = x² creates a beautiful parabola—a U-shaped curve. It shows how the area of ​​a square depends on the length of its side. The longer the side, the faster the area grows!
+
+The function y = 1/x creates a hyperbola—a line that never touches the axes. It describes an inverse relationship: the greater one, the less the other. For example, the faster you drive, the less time the journey takes.
+
+The square root y = √x draws a smooth curve that increases rapidly at first and then slows down. It's like filling a bottle: at first, the water rises quickly, then more slowly.
+
+Graphs help scientists, engineers, programmers, and even artists understand patterns and predict results. The ability to read graphs is a superpower in the modern world!

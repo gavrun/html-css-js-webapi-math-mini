@@ -1,0 +1,13 @@
+Fractals are one of the most amazing discoveries in mathematics. They are shapes that look the same no matter how closely you zoom in. Every small part resembles the entire shape—this is called self-similarity.
+
+Nature simply adores fractals! Look at a tree: large branches extend from the trunk, then smaller ones, then even smaller ones, and so on down to the smallest branches. Each branch resembles the entire tree. It's a fractal!
+
+Snowflakes, lightning, clouds, mountains, coastlines, Romanesco cabbage, ferns—they all have a fractal structure. Even your lungs and blood vessels are fractals! Nature uses this principle to fit huge surfaces into a small volume.
+
+The Sierpinski triangle is one of the most famous mathematical fractals. Start with a triangle, find the midpoints of the sides, connect them, and cut out the central triangle. Then repeat this for each remaining triangle. And so on ad infinitum!
+
+Fractals have a strange property: their length or area can be infinite, even if the figure fits on a sheet of paper. Imagine a coastline: the more precisely you measure it, taking into account all the curves, pebbles, and grains of sand, the longer it becomes!
+
+Computers have allowed us to draw incredibly complex fractals. The Mandelbrot set—one of them—looks like an alien world with infinite detail. You can zoom in on it forever, discovering new patterns!
+
+Fractals are used in computer graphics to create realistic landscapes, in medicine to analyze organs, and in economics to predict markets. They demonstrate that incredible beauty and complexity emerge from simple rules!
